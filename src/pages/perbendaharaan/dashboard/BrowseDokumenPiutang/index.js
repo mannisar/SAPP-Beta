@@ -4,7 +4,7 @@ import Detail from './Detail'
 import Timeline from './Timeline'
 import History from './History'
 import MutasiDokumen from './MutasiDokumen'
-const { Content } = Layout
+// const { Content } = Layout
 
 const columns = [
     {
@@ -167,7 +167,8 @@ function BrowseDokumenPiutang() {
         <Layout>
             <Row justify='center'>
                 <Col span={24}>
-                <Card>
+                    <Card>
+                        <h3>BROWSE DOKUMEN PIUTANG</h3>
                     <Table columns={columns} dataSource={data} size="small" scroll={{ x: 1500 }} />
                 </Card>
                 </Col>
@@ -177,7 +178,7 @@ function BrowseDokumenPiutang() {
                     <Timeline />
                 </Col>
             </Row>
-            <Row justify='center' style={{ marginTop: '10px' }}>
+            <Row justify='space-between' style={{ marginTop: '10px' }}>
                 <Col span={11} style={{marginRight: '5px'}}>
                     <Detail />
                 </Col>
@@ -185,7 +186,7 @@ function BrowseDokumenPiutang() {
                     <Pungutan />
                 </Col>
             </Row>
-            <Row justify='center' style={{ marginTop: '10px' }}>
+            <Row justify='space-between' style={{ marginTop: '10px' }}>
                 <Col span={11}>
                     <MutasiDokumen />
                 </Col>
