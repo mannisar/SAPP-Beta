@@ -1,4 +1,10 @@
-import { React, Table } from '../../libraries/dependencies';
+import { React, Table, Layout, Row, Col, Card } from '../../libraries/dependencies';
+import Pungutan from './Pungutan'
+import Detail from './Detail'
+import Timeline from './Timeline'
+import History from './History'
+import MutasiDokumen from './MutasiDokumen'
+const { Content } = Layout
 
 const columns = [
     {
@@ -158,7 +164,37 @@ const data = [
 
 function BrowseDokumenPiutang() {
     return (
-        <Table columns={columns} dataSource={data} size="small" scroll={{ x: 1500 }} />
+        <Layout>
+            <Row justify='center'>
+                <Col span={24}>
+                <Card>
+                    <Table columns={columns} dataSource={data} size="small" scroll={{ x: 1500 }} />
+                </Card>
+                </Col>
+            </Row>
+            <Row justify='center'>
+                <Col span={24} style={{ marginTop: '10px' }}>
+                    <Timeline />
+                </Col>
+            </Row>
+            <Row justify='center' style={{ marginTop: '10px' }}>
+                <Col span={11} style={{marginRight: '5px'}}>
+                    <Detail />
+                </Col>
+                <Col span={11}>
+                    <Pungutan />
+                </Col>
+            </Row>
+            <Row justify='center' style={{ marginTop: '10px' }}>
+                <Col span={11}>
+                    <MutasiDokumen />
+                </Col>
+                <Col span={11}>
+                    <History />
+                </Col>
+            </Row>
+            
+        </Layout>
     );
 }
 
