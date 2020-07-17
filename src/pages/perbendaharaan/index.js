@@ -14,8 +14,8 @@ function Perbendaharaan() {
                 <Layout className="site-layout-background" style={{ padding: '24px' }}>
                     <Content style={{ minHeight: 280 }}>
                         <Head />
-                        <BrowseDokumenPiutang />
-                        {/* <RekamDokumenPiutang /> */}
+                        {/* <BrowseDokumenPiutang /> */}
+                        <RekamDokumenPiutang />
                     </Content>
                 </Layout>
             </Content>
