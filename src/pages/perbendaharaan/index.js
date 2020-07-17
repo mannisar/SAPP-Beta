@@ -1,6 +1,6 @@
 import { React, Layout } from './libraries/dependencies';
-import { BrowseDokumenPiutang } from './dashboard';
-
+import { BrowseDokumenPiutang, RekamDokumenPiutang } from './dashboard';
+import Head from './header';
 const { Header, Content } = Layout;
 
 
@@ -14,16 +14,12 @@ function Perbendaharaan() {
                 <Layout className="site-layout-background" style={{ padding: '24px' }}>
                     <Content style={{ minHeight: 280 }}>
                         <h3>BROWSE DOKUMEN PIUTANG</h3>
+                        <Head />
                         <BrowseDokumenPiutang />
-                    </Content>
-                </Layout>
-                <Layout className="site-layout-background" style={{ padding: '24px' }}>
-                    <Content style={{ minHeight: 280 }}>
-                        <h3>TABLE FOOTER</h3>
+                        {/* <RekamDokumenPiutang /> */}
                     </Content>
                 </Layout>
             </Content>
-            {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
         </Layout>
     );
 }
