@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from './pages/perbendaharaan/libraries/dependencies';
 import './App.css';
 
 // @import pages

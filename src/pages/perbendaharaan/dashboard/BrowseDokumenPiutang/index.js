@@ -1,5 +1,4 @@
-import React from 'react';
-import { Table } from 'antd';
+import { React, Table } from '../../libraries/dependencies';
 
 const columns = [
     {

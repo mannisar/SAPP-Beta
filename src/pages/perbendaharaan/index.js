@@ -1,5 +1,4 @@
-import React from 'react';
-import { Layout } from 'antd';
+import { React, Layout } from './libraries/dependencies';
 import { BrowseDokumenPiutang } from './dashboard';
 
 const { Header, Content } = Layout;
