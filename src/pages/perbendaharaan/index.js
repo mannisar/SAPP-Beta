@@ -1,7 +1,6 @@
 import {
     React,
     Layout,
-    Menu,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
 } from './libraries/dependencies';
