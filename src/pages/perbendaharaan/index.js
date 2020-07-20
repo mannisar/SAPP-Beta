@@ -8,7 +8,6 @@ import {
 import { BrowseDokumenPiutang } from './dashboard';
 
 const { Header, Sider, Content } = Layout;
-const { SubMenu } = Menu;
 
 class Perbendaharaan extends React.Component {
     state = {
