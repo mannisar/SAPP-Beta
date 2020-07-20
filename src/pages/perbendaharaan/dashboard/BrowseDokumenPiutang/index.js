@@ -15,6 +15,7 @@ import Timeline from "./Timeline";
 import History from "./History";
 import MutasiDokumen from "./MutasiDokumen";
 // const { Content } = Layout
+import Header from '../../header';
 
 export default function BrowseDokumenPiutang() {
   const [showModal, setModal] = useState(false);
@@ -193,6 +194,7 @@ export default function BrowseDokumenPiutang() {
   ];
   return (
     <Layout>
+      <Header />
       <Modal
         title={contentModal.jenis_dokumen}
         visible={showModal}
