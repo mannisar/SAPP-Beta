@@ -3,13 +3,27 @@ import './App.css';
 
 // @import pages
 import Perbendaharaan from './pages/perbendaharaan';
-import { BrowseDokumenPiutang, RekamDokumenPiutang } from './pages/perbendaharaan/dashboard';
+import { RekamDokumenPiutang } from './pages/perbendaharaan/dashboard';
+
+const appRoutes = [
+  {
+    name: "RekamDokumenPiutang",
+    component: RekamDokumenPiutang,
+    exact: true,
+    path: "/Perekaman"
+  },
+  {
+    name: "Perbendaharaan",
+    component: Perbendaharaan,
+    exact: true,
+    path: "/"
+  }
+];
 
 function App() {
   return (
     <Router>
-      <Route exact path="/" component={Perbendaharaan} />
-      <Route path="/Perekaman" component={RekamDokumenPiutang} />
+      {appRoutes.map(route => <Route key={route.name} {...route} />)}
     </Router>
   )
 }

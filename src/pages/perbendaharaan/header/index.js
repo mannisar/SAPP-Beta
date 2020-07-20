@@ -1,10 +1,13 @@
-import { React, Input, Select, Row, Col, Button, PrinterFilled, PlusOutlined } from '../libraries/dependencies';
+import { React, Input, Select, Row, Col, Button, PrinterFilled, PlusOutlined, useHistory } from '../libraries/dependencies';
 
 const { Option } = Select;
 const { Search } = Input;
 
 function Head() {
-
+    let history = useHistory();
+    const handleNavigate = () => {
+        history.push('/Perekaman')
+    };
     return (
         <Row justify='start' style={{ backgroundColor: 'gray', padding: 8 }}>
             <Col span={8}>
@@ -23,7 +26,7 @@ function Head() {
                 </div>
             </Col>
             <Col span={4}>
-                <Button type="danger" icon={<PlusOutlined />} size={'middle'} />
+                <Button type="danger" icon={<PlusOutlined />} size={'middle'} onClick={handleNavigate} />
                 <Button type="info" icon={<PrinterFilled />} size={'middle'} style={{ marginLeft: 8 }} />
             </Col>
         </Row>
