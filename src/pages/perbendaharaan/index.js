@@ -1,26 +1,59 @@
-import { React, Layout } from './libraries/dependencies';
-import { BrowseDokumenPiutang, RekamDokumenPiutang } from './dashboard';
-import Head from './header';
-const { Header, Content } = Layout;
+import {
+    React,
+    Layout,
+    Menu,
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+} from './libraries/dependencies';
+import { BrowseDokumenPiutang } from './dashboard';
 
+const { Header, Sider, Content } = Layout;
+const { SubMenu } = Menu;
 
-function Perbendaharaan() {
-    return (
-        <Layout>
-            <Header className="header">
-                <h1 style={{ color: 'white' }}>CEISA 4.0 II</h1>
-            </Header>
-            <Content style={{ padding: '0 50px', marginTop: 50 }}>
-                <Layout className="site-layout-background" style={{ padding: '24px' }}>
-                    <Content style={{ minHeight: 280 }}>
-                        <Head />
-                        {/* <BrowseDokumenPiutang /> */}
-                        <RekamDokumenPiutang />
+class Perbendaharaan extends React.Component {
+    state = {
+        collapsed: false,
+    };
+
+    toggle = () => {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    };
+
+    render() {
+        console.log(this.props)
+        return (
+            <Layout style={{ minHeight: '100vh' }}>
+                <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+                    <div className="logo" />
+                    {/* <Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
+                        <SubMenu key="sub1" icon={<UserOutlined />} title="Perbendaharaan">
+                            <Menu.Item key="1"><Link to="/Browse" />Dashboard</Menu.Item>
+                        </SubMenu>
+                    </Menu> */}
+                </Sider>
+                <Layout className="site-layout">
+                    <Header className="site-layout-background" style={{ padding: 0 }}>
+                        {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                            className: 'trigger',
+                            onClick: this.toggle,
+                        })}
+                    </Header>
+                    <Content
+                        className="site-layout-background"
+                        style={{
+                            margin: '24px 16px',
+                            padding: 24,
+                            minHeight: 280,
+                        }}
+                    >
+                        <BrowseDokumenPiutang />
                     </Content>
                 </Layout>
-            </Content>
-        </Layout>
-    );
+            </Layout>
+        );
+    }
 }
 
 export default Perbendaharaan;

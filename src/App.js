@@ -1,12 +1,16 @@
-import { React } from './pages/perbendaharaan/libraries/dependencies';
+import { React, BrowserRouter as Router, Route } from './pages/perbendaharaan/libraries/dependencies';
 import './App.css';
 
 // @import pages
 import Perbendaharaan from './pages/perbendaharaan';
+import { BrowseDokumenPiutang, RekamDokumenPiutang } from './pages/perbendaharaan/dashboard';
 
 function App() {
   return (
-    <Perbendaharaan />
+    <Router>
+      <Route exact path="/" component={Perbendaharaan} />
+      <Route path="/Perekaman" component={RekamDokumenPiutang} />
+    </Router>
   )
 }
 
