@@ -219,6 +219,7 @@ export default function BrowseDokumenPiutang() {
               columns={columns}
               dataSource={data}
               size="small"
+              pagination={5}
               scroll={{ x: 1500 }}
             />
           </Card>
