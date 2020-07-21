@@ -1,5 +1,5 @@
 // @import Build-in
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 // @import Packages
@@ -12,4 +12,4 @@ export * from "antd";
 export * from "@ant-design/icons";
 
 // @for use other comp
-export { React, ReactDOM, axios, moment, useState };
+export { React, ReactDOM, axios, moment, useState, useEffect };

@@ -12,16 +12,20 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function cetakDokumen(data) {
+export default function CetakDokumen(data) {
   console.log("pdf props", data);
+  let newData = {
+    nama: "dulah",
+    jabatan: "depan",
+  };
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
-          <Text>{data.no_dokumen}</Text>
+          <Text>Halo {newData.nama}</Text>
         </View>
         <View style={styles.section}>
-          <Text>{JSON.stringify(data)}</Text>
+          <Text>Halo ya {newData.jabatan}</Text>
         </View>
       </Page>
     </Document>

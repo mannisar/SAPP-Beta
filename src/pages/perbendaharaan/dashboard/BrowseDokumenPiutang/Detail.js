@@ -1,6 +1,15 @@
-import { React, Card, List, Button } from "../../libraries/dependencies";
+import {
+  React,
+  useState,
+  Card,
+  List,
+  Button,
+  Modal,
+} from "../../libraries/dependencies";
 
 export default function Detail() {
+  const [showModal, setModal] = useState(false);
+  const [contentModal, setContent] = useState("");
   const data = [
     {
       judul: "Kantor Penerbit",
@@ -52,16 +61,31 @@ export default function Detail() {
     if (data.judul === "Dokumen Asal") {
       return (
         <td>
-          {data.nilai} <Button>Cetak</Button>
+          {data.nilai} <Button onClick={() => handleLihat(data)}>Lihat</Button>
         </td>
       );
     } else {
       return <td>{data.nilai}</td>;
     }
   }
+
+  function handleLihat(key) {
+    setContent(key);
+    setModal(true);
+    // console.log(key, "key===========");
+  }
+
   return (
     <Card>
       <h2>Detail</h2>
+      <Modal
+        title={contentModal.judul}
+        visible={showModal}
+        onOk={() => setModal(false)}
+        onCancel={() => setModal(false)}
+      >
+        <p>{contentModal.nilai}</p>
+      </Modal>
       <List
         size="small"
         bordered
