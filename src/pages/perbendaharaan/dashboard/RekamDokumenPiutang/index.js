@@ -5,32 +5,62 @@ import {
     Col,
     Form,
     Input,
-    Button,
-    Space,
     Checkbox,
     Tabs,
     Descriptions,
-    MinusCircleOutlined,
-    PlusOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     useHistory,
     useState,
     Menu,
-    UserOutlined
+    UserOutlined,
+    Table,
+    Select,
+    Button
 } from '../../libraries/dependencies';
 
 const { TabPane } = Tabs;
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
+const { Option } = Select;
 
 function RekamDokumenPiutang() {
-    const [state, setState] = useState({
-        collapsed: false
-    })
+    const [collapsed, setCollapsed] = useState(false);
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [name, setName] = useState('');
+    const [pemberitahuan, setPemberitahuan] = useState(0);
+    const [penetapan, setPenetapan] = useState(0);
+    const [selisih, setSelisih] = useState(0);
+    const [data, setData] = useState([]);
+    const [columns] = useState([
+        {
+            title: '',
+            dataIndex: 'name',
+        },
+        {
+            title: 'Pemberitahuan',
+            dataIndex: 'pemberitahuan',
+        },
+        {
+            title: 'Penetapan',
+            dataIndex: 'penetapan',
+        },
+        {
+            title: 'Selisih',
+            dataIndex: 'selisih',
+        },
+    ])
+
+    const handleChange = val => {
+        setName(val)
+    }
+
+    const onSelectChange = selectedRowKeys => {
+        setSelectedRowKeys({ selectedRowKeys: selectedRowKeys })
+    };
 
     const toggle = () => {
-        setState({ collapsed: !state.collapsed })
+        setCollapsed({ collapsed: !collapsed })
     };
 
     let history = useHistory();
@@ -38,10 +68,63 @@ function RekamDokumenPiutang() {
         history.push('/')
     };
 
+    const handleSave = () => {
+        let data_2 = {
+            key: data.length + 1,
+            name: name,
+            pemberitahuan: parseInt(pemberitahuan),
+            penetapan: parseInt(penetapan),
+            selisih: parseInt(selisih)
+        }
+
+        const newData = [...data, data_2]
+        setData(newData);
+    }
+
+    const rowSelection = () => {
+        return {
+            selectedRowKeys,
+            onChange: onSelectChange,
+            selections: [
+                Table.SELECTION_ALL,
+                Table.SELECTION_INVERT,
+                {
+                    key: 'odd',
+                    text: 'Select Odd Row',
+                    onSelect: changableRowKeys => {
+                        let newSelectedRowKeys = [];
+                        newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+                            if (index % 2 !== 0) {
+                                return false;
+                            }
+                            return true;
+                        });
+                        setSelectedRowKeys({ selectedRowKeys: newSelectedRowKeys });
+                    },
+                },
+                {
+                    key: 'even',
+                    text: 'Select Even Row',
+                    onSelect: changableRowKeys => {
+                        let newSelectedRowKeys = [];
+                        newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+                            if (index % 2 !== 0) {
+                                return true;
+                            }
+                            return false;
+                        });
+                        setSelectedRowKeys({ selectedRowKeys: newSelectedRowKeys });
+                    },
+                },
+            ],
+        }
+    }
+
+    console.log(data)
     const newLocal = 'checkbox-group';
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Sider trigger={null} collapsible collapsed={state.collapsed}>
+            <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="logo" />
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
                     <SubMenu key="sub1" icon={<UserOutlined />} title="Perbendaharaan">
@@ -51,7 +134,7 @@ function RekamDokumenPiutang() {
             </Sider>
             <Layout className="site-layout">
                 <Header className="site-layout-background" style={{ padding: 0 }}>
-                    {React.createElement(state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                    {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                         className: 'trigger',
                         onClick: toggle,
                     })}
@@ -87,56 +170,30 @@ function RekamDokumenPiutang() {
                                 </Form>
                             </Col>
                         </Row>
-                        <Row justify="center">
+                        <Row>
                             <Col span={24} style={{ backgroundColor: 'white', padding: 8 }}>
                                 <Tabs defaultActiveKey="1" style={{ border: '1px solid #eaeaea', padding: 8 }}>
                                     <TabPane tab={<span><Descriptions />Uraian Pungutan</span>} key="1">
-                                        <Form name="dynamic_form_nest_item" autoComplete="off">
-                                            <Form.List name="users">
-                                                {(fields, { add, remove }) => {
-                                                    return (
-                                                        <div>
-                                                            {fields.map(field => (
-                                                                <Space key={field.key} style={{ display: 'flex' }} align="start">
-                                                                    <Form.Item
-                                                                        {...field}
-                                                                        name={[field.name, 'first']}
-                                                                        fieldKey={[field.fieldKey, 'first']}
-                                                                        rules={[{ required: true, message: 'Missing first name' }]}
-                                                                    >
-                                                                        <Input placeholder="First Name" />
-                                                                    </Form.Item>
-                                                                    <Form.Item
-                                                                        {...field}
-                                                                        name={[field.name, 'last']}
-                                                                        fieldKey={[field.fieldKey, 'last']}
-                                                                        rules={[{ required: true, message: 'Missing last name' }]}
-                                                                    >
-                                                                        <Input placeholder="Last Name" />
-                                                                    </Form.Item>
-
-                                                                    <MinusCircleOutlined
-                                                                        onClick={() => {
-                                                                            remove(field.name);
-                                                                        }}
-                                                                    />
-                                                                </Space>
-                                                            ))}
-
-                                                            <Form.Item style={{ margin: 0 }} justify="center">
-                                                                <Button
-                                                                    type="dashed"
-                                                                    onClick={() => {
-                                                                        add();
-                                                                    }}
-                                                                    block
-                                                                ><PlusOutlined /> Tambah Data</Button>
-                                                            </Form.Item>
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Form.List>
-                                        </Form>
+                                        <Row justify="start" style={{ marginBottom: 10 }}>
+                                            <Select defaultValue="Choose field.." style={{ width: 325 }} onChange={handleChange}>
+                                                <Option value="Bea Masuk">Bea Masuk</Option>
+                                                <Option value="BM AD">BM AD</Option>
+                                                <Option value="BM PT">BM PT</Option>
+                                            </Select>
+                                            <Input placeholder="null" type="number" onChange={(e) => setPemberitahuan(e.target.value)} style={{ width: 315 }} />
+                                            <Input placeholder="null" type="number" onChange={(e) => setPenetapan(e.target.value)} style={{ width: 240 }} />
+                                            <Input placeholder="null" type="number" onChange={(e) => setSelisih(e.target.value)} style={{ width: 165 }} />
+                                        </Row>
+                                        <Row justify="center">
+                                            <Col span={24}>
+                                                <Button
+                                                    type="info"
+                                                    style={{ width: '100%' }}
+                                                    onClick={handleSave}
+                                                >Save</Button>
+                                            </Col>
+                                        </Row>
+                                        <Table rowSelection={rowSelection} columns={columns} dataSource={data} pagination={false} />
                                     </TabPane>
                                     <TabPane tab={<span><Descriptions />Uraian Kesalahan</span>} key="2">FORM</TabPane>
                                 </Tabs>
