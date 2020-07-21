@@ -9,22 +9,22 @@ import {
   Col,
   Card,
 } from "../../libraries/dependencies";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import CetakDokumen from "./CetakDokumen";
 import Pungutan from "./Pungutan";
 import Detail from "./Detail";
 import Timeline from "./Timeline";
 import History from "./History";
 import MutasiDokumen from "./MutasiDokumen";
 // const { Content } = Layout
-import Header from '../../header';
+import Header from "../../header";
 
 export default function BrowseDokumenPiutang() {
   const [showModal, setModal] = useState(false);
   const [contentModal, setContent] = useState("");
 
-  function handleLihat(key) {
-    setContent(key);
-    setModal(true);
-    console.log(key, "key===========");
+  function handleLihat(record) {
+    return `${record.jenis_dokumen}-${record.no_dokumen}`;
   }
 
   const columns = [
@@ -101,7 +101,20 @@ export default function BrowseDokumenPiutang() {
       width: 100,
       fixed: "right",
       render: (text, record) => (
-        <Button onClick={() => handleLihat(record)}>Lihat</Button>
+        // <Button onClick={() => handleLihat(record)}>Cetak</Button>
+        <PDFDownloadLink
+          document={<CetakDokumen data={record} />}
+          fileName={record.jenis_dokumen}
+          style={{
+            textDecoration: "none",
+            padding: "10px",
+            color: "#4a4a4a",
+            backgroundColor: "#f2f2f2",
+            border: "1px solid #4a4a4a",
+          }}
+        >
+          Cetak
+        </PDFDownloadLink>
       ),
     },
   ];
