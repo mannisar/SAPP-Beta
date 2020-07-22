@@ -13,7 +13,7 @@ import {
 const { Option } = Select;
 const { Search } = Input;
 
-function Head() {
+export default function Menu() {
   let history = useHistory();
   const handleNavigate = () => {
     history.push("/Perekaman");
@@ -54,5 +54,3 @@ function Head() {
     </Row>
   );
 }
-
-export default Head;
