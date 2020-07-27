@@ -69,7 +69,7 @@ function RekamDokumenPiutang() {
 
         }
     ];
-    const [db_dokumen_asal, setDb_dokumen_asal] = useState([
+    const db_dokumen_asal = [
         {
             dokumen_asal: "SPTNP/000001/05/06/2001",
             // surat: "S000001",
@@ -92,21 +92,27 @@ function RekamDokumenPiutang() {
             petugas: "198989504523538987 - Salman Isar",
             key: "2"
         }
-    ]);
+    ];
+    const [kantor_penerbit, setKantor_penerbit] = useState("");
+    const [kantor_monitor, setKantor_monitor] = useState("");
+    const [tanggal_jatuh_tempo, setTanggal_jatuh_tempo] = useState("");
     const [surat, setSurat] = useState("");
     const [nomor, setNomor] = useState("");
-    const [date, setDate] = useState("");
-    const [perusahaan] = useState("");
-    const [alamat_perusahaan] = useState("");
-    const [ppjk] = useState("");
-    const [petugas] = useState("");
+    const [tanggal_dokumen, setTanggal_dokumen] = useState("");
+    const [perusahaan, setPerusahaan] = useState("");
+    const [alamat_perusahaan, setAlamat_Perusahaan] = useState("");
+    const [ppjk, setPpjk] = useState("");
+    const [petugas, setPetugas] = useState("");
     const [form] = Form.useForm();
 
     const handleTarik = () => {
-        let dokumen_asal = `${surat}/${nomor}/${date}`;
+        let dokumen_asal = `${surat}/${nomor}/${tanggal_dokumen}`;
         for (let i = 0; i < db_dokumen_asal.length; i++) {
             if (db_dokumen_asal[i].dokumen_asal === dokumen_asal) {
                 form.setFieldsValue({
+                    // kantor_penerbit: kantor_penerbit,
+                    // kantor_monitor: kantor_monitor,
+                    // tanggal_jatuh_tempo: tanggal_jatuh_tempo,
                     perusahaan: db_dokumen_asal[i].perusahaan,
                     alamat_perusahaan: db_dokumen_asal[i].alamat_perusahaan,
                     ppjk: db_dokumen_asal[i].ppjk,
@@ -118,10 +124,6 @@ function RekamDokumenPiutang() {
             // STOP
         }
     }
-
-    const handleSurat = e => {
-        setSurat(e.target.value);
-    };
 
     let history = useHistory();
     const handleNavigate = () => {
@@ -180,8 +182,24 @@ function RekamDokumenPiutang() {
         setValue("");
     }
 
-    const handleDate = (date, dateString) => {
-        setDate(dateString)
+    const handleTanggalDokumen = (date, dateString) => {
+        setTanggal_dokumen(dateString)
+    }
+
+    const handleTanggalJatuhTMP = (date, dateString) => {
+        setTanggal_jatuh_tempo(dateString)
+    }
+
+    const handleSimpan = () => {
+        // others
+        setKantor_penerbit("");
+        setKantor_monitor("");
+        setTanggal_jatuh_tempo("");
+        // 3 params
+        setSurat("");
+        setNomor("");
+        setTanggal_dokumen("");
+        form.resetFields();
     }
 
     return (
@@ -210,35 +228,44 @@ function RekamDokumenPiutang() {
                     }}
                 >
                     <Layout style={{ backgroundColor: 'white' }}>
-                        <h1 style={{ fontWeight: 'bold', fontSize: 24 }}>Perekaman Dokumen Piutang</h1>
+                        <Row justify="space-between">
+                            <h1 style={{ fontWeight: 'bold', fontSize: 24 }}>Perekaman Dokumen Piutang</h1>
+                            <Button type="primary" htmlType="submit" style={{ width: 100, height: 35 }} onClick={handleSimpan}>Simpan</Button>
+                        </Row>
                         <Row>
                             <Col span={24}>
                                 <Form labelCol={{ span: 4 }} form={form} wrapperCol={{ span: 12 }} labelAlign={"left"} name="record-form" size={"small"} style={{ border: '1px solid #eaeaea' }}>
-                                    <Form.Item name="kd_penerbit" label="Kantor Penerbit" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
-                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} />
+                                    <Form.Item name="kantor_penerbit" label="Kantor Penerbit" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
+                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} value={kantor_penerbit} onChange={(e) => setKantor_penerbit(e.target.value)} />
                                     </Form.Item>
-                                    <Form.Item name="kt_monitor" label="Kantor Monitor" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
-                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} />
+                                    <Form.Item name="kantor_monitor" label="Kantor Monitor" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
+                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} value={kantor_monitor} onChange={(e) => setKantor_monitor(e.target.value)} />
                                     </Form.Item>
-                                    <Form.Item name="dokumen" label="Dokumen" wrapperCol={{ span: 4 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
-                                        <Select value={"-"}>
-                                            <Option value="Sptnp">Sptnp</Option>
-                                            <Option value="Spktnp">Spktnp</Option>
-                                            <Option value="Spp">Spp</Option>
-                                            <Option value="Sppbk">Sppbk</Option>
-                                            <Option value="Spkpbk">Spkpbk</Option>
-                                            <Option value="Spsa">Spsa</Option>
-                                            <Option value="Sp3dri">Sp3dri</Option>
-                                        </Select>
-                                    </Form.Item>
-                                    <Form.Item name="tgl_jatuh_tmp" label="Tanggal Jatuh Tempo" wrapperCol={{ span: 4 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
-                                        <DatePicker onChange={handleDate} placeholder="" style={{ width: '100%' }} />
+                                    <Form.Item name="tanggal_jatuh_tempo" label="Tanggal Jatuh Tempo" wrapperCol={{ span: 4 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
+                                        <DatePicker onChange={handleTanggalJatuhTMP} selected={tanggal_jatuh_tempo} style={{ width: '100%' }} format={"DD/MM/YYYY"} />
                                     </Form.Item>
                                     <Form.Item name="dokumen_asal" label="Dokumen Asal" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
                                         <Input.Group compact>
                                             {/** SURAT */}
                                             <Form.Item style={{ marginBottom: 0, width: "20%" }}>
-                                                <Input style={{ borderLeft: '5px solid #eaeaea' }} value={surat} onChange={(e) => setSurat(e.target.value)} placeholder="Surat" />
+                                                <Select value={surat.length === 0 ? "-" : surat} style={{ width: '100%', borderLeft: '5px solid #eaeaea' }} onChange={(val) => setSurat(val)} size={"small"}>
+                                                    <Option value="PIB BERKALA">PIB BERKALA</Option>
+                                                    <Option value="PIB VOORITSLAG">PIB VOORITSLAG</Option>
+                                                    <Option value="RUSH HANDLING">RUSH HANDLING</Option>
+                                                    <Option value="SPTNP">SPTNP</Option>
+                                                    <Option value="SPKTNP">SPKTNP</Option>
+                                                    <Option value="SPP">SPP</Option>
+                                                    <Option value="SPSA">SPSA</Option>
+                                                    <Option value="SPPBMCP">SPPBMCP</Option>
+                                                    <Option value="PEB PENUNDAAN">PEB PENUNDAAN</Option>
+                                                    <Option value="SPPBK">SPPBK</Option>
+                                                    <Option value="SPKPBK">SPKPBK</Option>
+                                                    <Option value="CK1 PENUNDAAN">CK1 PENUNDAAN</Option>
+                                                    <Option value="CK1A BERKALA">CK1A BERKALA</Option>
+                                                    <Option value="CK5">CK5</Option>
+                                                    <Option value="STCK1">STCK1</Option>
+                                                    <Option value="SPPBP">SPPBP</Option>
+                                                </Select>
                                             </Form.Item>
                                             <span style={{ marginRight: 8, marginLeft: 8 }}>/</span>
                                             {/** NOMOR */}
@@ -248,7 +275,7 @@ function RekamDokumenPiutang() {
                                             <span style={{ marginRight: 8, marginLeft: 8 }}>/</span>
                                             {/** TANGGAL */}
                                             <Form.Item style={{ marginBottom: 0, width: "20%" }}>
-                                                <DatePicker style={{ width: '100%' }} onChange={handleDate} placeholder="Tanggal" format={"DD/MM/YYYY"} />
+                                                <DatePicker style={{ width: '100%' }} onChange={handleTanggalDokumen} placeholder="Tanggal" format={"DD/MM/YYYY"} />
                                             </Form.Item>
                                             <Form.Item style={{ marginLeft: 8, marginBottom: 0, width: "12%" }}>
                                                 <Button type="info" style={{ width: '100%' }} onClick={handleTarik}>Tarik</Button>
@@ -259,16 +286,16 @@ function RekamDokumenPiutang() {
                                         </Input.Group>
                                     </Form.Item>
                                     <Form.Item name="perusahaan" label="Perusahaan" wrapperCol={{ span: 8 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
-                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} />
+                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} value={perusahaan} onChange={(e) => setPerusahaan(e.target.value)} />
                                     </Form.Item>
                                     <Form.Item name="alamat_perusahaan" label="Alamat Perusahaan" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
-                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} />
+                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} value={alamat_perusahaan} onChange={(e) => setAlamat_Perusahaan(e.target.value)} />
                                     </Form.Item>
                                     <Form.Item name="ppjk" label="PPJK" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
-                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} />
+                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} value={ppjk} onChange={(e) => setPpjk(e.target.value)} />
                                     </Form.Item>
                                     <Form.Item name="petugas" label="Petugas" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px' }}>
-                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} />
+                                        <Input style={{ borderLeft: '5px solid #eaeaea' }} value={petugas} onChange={(e) => setPetugas(e.target.value)} />
                                     </Form.Item>
                                 </Form>
                             </Col>
