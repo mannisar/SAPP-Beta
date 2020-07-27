@@ -15,6 +15,8 @@ import {
     Button,
     DatePicker,
     Table,
+    AutoComplete,
+    message
 } from '../../libraries/dependencies';
 
 const { Header, Sider, Content } = Layout;
@@ -29,7 +31,8 @@ function RekamDokumenPiutang() {
     const [data_pungutan, setData_pungutan] = useState([
         {
             akun: 'Bea Masuk',
-            nilai: '34.000.000'
+            nilai: '34.000.000',
+            key: '1'
         },
     ]);
     const columns_pungutan = [
@@ -50,7 +53,8 @@ function RekamDokumenPiutang() {
     const [data_keterangan, setData_keterangan] = useState([
         {
             name: 'Pasal',
-            value: 'PASAL TA AYAT (3)'
+            value: 'PASAL TA AYAT (3)',
+            key: '1'
         },
     ]);
     const columns_keterangan = [
@@ -66,6 +70,27 @@ function RekamDokumenPiutang() {
 
         }
     ];
+    const [inputValues, setInputValues] = useState('');
+    const [options, setOptions] = useState([]);
+
+    const mockVal = (str) => ({
+        value: str
+    });
+
+    const onSearch = searchText => {
+        setOptions(
+            !searchText ? [] : [mockVal(searchText)],
+        );
+        console.log(options)
+    };
+
+    const onSelect = data => {
+        console.log('onSelect', data);
+    };
+
+    const onChange = data => {
+        setInputValues(data);
+    };
 
     let history = useHistory();
     const handleNavigate = () => {
@@ -128,6 +153,12 @@ function RekamDokumenPiutang() {
         // console.log(date, dateString);
     }
 
+    const handleTarik = () => {
+        let condition = true
+        if (condition) message.success('This is a success message');
+        else message.error('This is a error message');
+    }
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -180,17 +211,43 @@ function RekamDokumenPiutang() {
                                     </Form.Item>
                                     <Form.Item name="dokumen_asal" label="Dokumen Asal" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
                                         <Input.Group compact>
-                                            <Form.Item style={{ marginBottom: 0, width: "25%" }}>
-                                                <Input placeholder="Nomor" style={{ borderLeft: '5px solid #eaeaea' }} />
+                                            <Form.Item style={{ marginBottom: 0, width: "20%" }}>
+                                                <AutoComplete
+                                                    value={inputValues}
+                                                    options={options}
+                                                    style={{
+                                                        borderLeft: '5px solid #eaeaea',
+                                                        width: "100%"
+                                                    }}
+                                                    onSelect={onSelect}
+                                                    onSearch={onSearch}
+                                                    onChange={onChange}
+                                                    placeholder="Surat"
+                                                />
                                             </Form.Item>
                                             <span style={{ marginRight: 8, marginLeft: 8 }}>/</span>
-                                            <Form.Item style={{ marginBottom: 0, width: "25%" }}>
+                                            <Form.Item style={{ marginBottom: 0, width: "20%" }}>
+                                                <AutoComplete
+                                                    // value={inputValues}
+                                                    // options={options}
+                                                    style={{
+                                                        borderLeft: '5px solid #eaeaea',
+                                                        width: "100%"
+                                                    }}
+                                                    // onSelect={onSelect}
+                                                    // onSearch={onSearch}
+                                                    // onChange={onChange}
+                                                    placeholder="Nomor"
+                                                />
+                                            </Form.Item>
+                                            <span style={{ marginRight: 8, marginLeft: 8 }}>/</span>
+                                            <Form.Item style={{ marginBottom: 0, width: "20%" }}>
                                                 <DatePicker onChange={handleDate} placeholder="Tanggal" style={{ width: '100%' }} />
                                             </Form.Item>
-                                            <Form.Item style={{ marginLeft: 8, marginBottom: 0, width: "15%" }}>
-                                                <Button type="info" style={{ width: '100%' }}>Tarik</Button>
+                                            <Form.Item style={{ marginLeft: 8, marginBottom: 0, width: "12%" }}>
+                                                <Button type="info" style={{ width: '100%' }} onClick={handleTarik}>Tarik</Button>
                                             </Form.Item>
-                                            <Form.Item style={{ marginLeft: 8, marginBottom: 0, width: "15%" }}>
+                                            <Form.Item style={{ marginLeft: 8, marginBottom: 0, width: "12%" }}>
                                                 <Button type="info" style={{ width: '100%' }}>Lihat</Button>
                                             </Form.Item>
                                         </Input.Group>
@@ -204,7 +261,7 @@ function RekamDokumenPiutang() {
                                     <Form.Item name="ppjk" label="PPJK" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
                                         <Input style={{ borderLeft: '5px solid #eaeaea' }} />
                                     </Form.Item>
-                                    <Form.Item name="petugas" label="Petugas" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
+                                    <Form.Item name="petugas" label="Petugas" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px' }}>
                                         <Input style={{ borderLeft: '5px solid #eaeaea' }} />
                                     </Form.Item>
                                 </Form>
@@ -252,7 +309,7 @@ function RekamDokumenPiutang() {
                                 <p>Kurang Bayar</p>
                             </Col>
                         </Row>
-                        <h1 style={{ fontWeight: 'bold', fontSize: 24, marginTop: 14 }}>Keterangan</h1>
+                        <h1 style={{ fontWeight: 'bold', fontSize: 24 }}>Keterangan</h1>
                         <Row>
                             <Col span={16}>
                                 <Row>
