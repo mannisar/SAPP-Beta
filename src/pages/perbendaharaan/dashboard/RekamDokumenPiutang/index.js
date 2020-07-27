@@ -144,13 +144,20 @@ function RekamDokumenPiutang() {
       selisih: selisih,
       nilai: parseInt(nilai),
     };
-
-    const newData = [...data_pungutan, ObjData];
-    console.log(newData);
-    setData_pungutan(newData);
-    setAkun("");
-    setSelisih("");
-    setNilai(0);
+    if (!akun) {
+      message.error("Mohon pilih akun");
+    } else if (!selisih) {
+      message.error("Mohon pilih jenis selisih");
+    } else if (!nilai) {
+      message.error("Mohon isi nilai");
+    } else {
+      const newData = [...data_pungutan, ObjData];
+      console.log(newData);
+      setData_pungutan(newData);
+      setAkun("");
+      setSelisih("");
+      setNilai(0);
+    }
   };
 
   const handleName = (val) => {
@@ -188,6 +195,14 @@ function RekamDokumenPiutang() {
       }
       setKeyEditPungutan(0);
     }
+
+    function deletePungutan() {
+      let newData = data_pungutan.filter((data) => {
+        return data.key !== item.key;
+      });
+      setData_pungutan(newData);
+    }
+
     function klikEdit() {
       setKeyEditPungutan(item.key);
       setEditValuePungutan(item.nilai);
@@ -200,7 +215,11 @@ function RekamDokumenPiutang() {
             onClick={() => klikEdit()}
             style={{ marginRight: "5px" }}
           ></Button>
-          <Button type="Warning" icon={<DeleteFilled />}></Button>
+          <Button
+            type="Warning"
+            icon={<DeleteFilled />}
+            onClick={() => deletePungutan()}
+          ></Button>
         </>
       );
     } else {
@@ -520,16 +539,14 @@ function RekamDokumenPiutang() {
                           //     <Button>Delete</Button>,
                           //   ]}
                           style={{
-                            // border: "1px solid",
+                            border: "1px solid",
                             display: "flex",
-                            justifyContent: "flex-start",
-                            backgroundColor:
-                              item.selisih === "lebih bayar" ? "green" : "#fff",
+                            justifyContent: "space-between",
                           }}
                         >
                           <td
                             style={{
-                              minWidth: "200px",
+                              minWidth: "150px",
                               maxWidth: "550px",
                             }}
                           >
@@ -539,6 +556,10 @@ function RekamDokumenPiutang() {
                             style={{
                               minWidth: "200px",
                               maxWidth: "550px",
+                              backgroundColor:
+                                item.selisih === "lebih bayar"
+                                  ? "green"
+                                  : "#fff",
                             }}
                           >
                             {FormEditPungutan(item)}
