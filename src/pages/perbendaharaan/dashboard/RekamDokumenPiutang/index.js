@@ -25,6 +25,38 @@ const { Option } = Select;
 function RekamDokumenPiutang() {
     const [collapsed, setCollapsed] = useState(false);
     const [akun, setAkun] = useState("");
+    const options_akun = [
+        {
+            name: "Bea Masuk",
+            value: "Bea Masuk",
+            key: "1"
+        },
+        {
+            name: "BM AD",
+            value: "BM AD",
+            key: "2"
+        },
+        {
+            name: "BM PT",
+            value: "BM PT",
+            key: "3"
+        },
+        {
+            name: "PPN",
+            value: "PPN",
+            key: "4"
+        },
+        {
+            name: "PPH",
+            value: "PPH",
+            key: "5"
+        },
+        {
+            name: "DENDA",
+            value: "DENDA",
+            key: "6"
+        },
+    ];
     const [selisih, setSelisih] = useState("");
     const [nilai, setNilai] = useState(0);
     const [data_pungutan, setData_pungutan] = useState([
@@ -118,9 +150,9 @@ function RekamDokumenPiutang() {
                     ppjk: db_dokumen_asal[i].ppjk,
                     petugas: db_dokumen_asal[i].petugas,
                 })
-                message.success("Data di Temukan!");
-                return false;
             }
+            message.error("Data Tidak di Temukan!");
+            return false;
             // STOP
         }
     }
@@ -248,7 +280,7 @@ function RekamDokumenPiutang() {
                                         <Input.Group compact>
                                             {/** SURAT */}
                                             <Form.Item style={{ marginBottom: 0, width: "20%" }}>
-                                                <Select value={surat.length === 0 ? "-" : surat} style={{ width: '100%', borderLeft: '5px solid #eaeaea' }} onChange={(val) => setSurat(val)} size={"small"}>
+                                                <Select value={surat.length === 0 ? "-" : surat} style={{ width: '100%' }} onChange={(val) => setSurat(val)} size={"small"}>
                                                     <Option value="PIB BERKALA">PIB BERKALA</Option>
                                                     <Option value="PIB VOORITSLAG">PIB VOORITSLAG</Option>
                                                     <Option value="RUSH HANDLING">RUSH HANDLING</Option>
@@ -307,12 +339,18 @@ function RekamDokumenPiutang() {
                                     <Col span={6} style={{ display: 'flex' }}>
                                         <h4 style={{ marginRight: 10 }}>Akun :</h4>
                                         <Select value={akun.length === 0 ? "-" : akun} style={{ width: '60%' }} onChange={handleAkun} size={"small"}>
-                                            <Option value="Bea Masuk">Bea Masuk</Option>
-                                            <Option value="BM AD">BM AD</Option>
-                                            <Option value="BM PT">BM PT</Option>
-                                            <Option value="PPN">PPN</Option>
-                                            <Option value="PPH">PPH</Option>
-                                            <Option value="Denda">Denda</Option>
+                                            {surat === "CK1 PENUNDAAN" || surat === "CK1A BERKALA" ?
+                                                (
+                                                    <>
+                                                        <Option value="Cukai HT">Cukai HT</Option>
+                                                        <Option value="Cukai MMEA">Cukai MMEA</Option>
+                                                        <Option value="Cukai EA">Cukai EA</Option>
+                                                    </>
+                                                ) : (
+                                                    options_akun.map((item) =>
+                                                        <Option key={item.key} value={item.value}>{item.name}</Option>)
+                                                )
+                                            }
                                         </Select>
                                     </Col>
                                     <Col span={6} style={{ display: 'flex' }}>
