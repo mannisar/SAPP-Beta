@@ -15,7 +15,6 @@ import {
     Button,
     DatePicker,
     Table,
-    AutoComplete,
     message
 } from '../../libraries/dependencies';
 
@@ -70,26 +69,58 @@ function RekamDokumenPiutang() {
 
         }
     ];
-    const [inputValues, setInputValues] = useState('');
-    const [options, setOptions] = useState([]);
+    const [db_dokumen_asal, setDb_dokumen_asal] = useState([
+        {
+            dokumen_asal: "SPTNP/000001/05/06/2001",
+            // surat: "S000001",
+            // nomor: "000001",
+            // tanggal: "2019-02-07", // MM/DD/YYYY
+            perusahaan: "12345678912345 - PT TESTING INDONESIA",
+            alamat_perusahaan: "Jalan Alamat PT Testing Indonesia",
+            ppjk: "-",
+            petugas: "198989504523538987 - Andhika Kusuma",
+            key: "1"
+        },
+        {
+            dokumen_asal: "SPP/000002/05/06/2020",
+            // surat: "S000002",
+            // nomor: "000002",
+            // tanggal: "2020-02-08", // MM/DD/YYYY
+            perusahaan: "12345678912345 - PT SINAR MULYA SENTOSA",
+            alamat_perusahaan: "Jalan Alamat Cileungsi Bogor",
+            ppjk: "-",
+            petugas: "198989504523538987 - Salman Isar",
+            key: "2"
+        }
+    ]);
+    const [surat, setSurat] = useState("");
+    const [nomor, setNomor] = useState("");
+    const [date, setDate] = useState("");
+    const [perusahaan] = useState("");
+    const [alamat_perusahaan] = useState("");
+    const [ppjk] = useState("");
+    const [petugas] = useState("");
+    const [form] = Form.useForm();
 
-    const mockVal = (str) => ({
-        value: str
-    });
+    const handleTarik = () => {
+        let dokumen_asal = `${surat}/${nomor}/${date}`;
+        for (let i = 0; i < db_dokumen_asal.length; i++) {
+            if (db_dokumen_asal[i].dokumen_asal === dokumen_asal) {
+                form.setFieldsValue({
+                    perusahaan: db_dokumen_asal[i].perusahaan,
+                    alamat_perusahaan: db_dokumen_asal[i].alamat_perusahaan,
+                    ppjk: db_dokumen_asal[i].ppjk,
+                    petugas: db_dokumen_asal[i].petugas,
+                })
+                message.success("Data di Temukan!");
+                return false;
+            }
+            // STOP
+        }
+    }
 
-    const onSearch = searchText => {
-        setOptions(
-            !searchText ? [] : [mockVal(searchText)],
-        );
-        console.log(options)
-    };
-
-    const onSelect = data => {
-        console.log('onSelect', data);
-    };
-
-    const onChange = data => {
-        setInputValues(data);
+    const handleSurat = e => {
+        setSurat(e.target.value);
     };
 
     let history = useHistory();
@@ -124,7 +155,7 @@ function RekamDokumenPiutang() {
         const newData = [...data_pungutan, ObjData]
         setData_pungutan(newData);
         setAkun("");
-        // setSelisih("");
+        setSelisih("");
         setNilai(0);
     }
 
@@ -150,13 +181,7 @@ function RekamDokumenPiutang() {
     }
 
     const handleDate = (date, dateString) => {
-        // console.log(date, dateString);
-    }
-
-    const handleTarik = () => {
-        let condition = true
-        if (condition) message.success('This is a success message');
-        else message.error('This is a error message');
+        setDate(dateString)
     }
 
     return (
@@ -188,7 +213,7 @@ function RekamDokumenPiutang() {
                         <h1 style={{ fontWeight: 'bold', fontSize: 24 }}>Perekaman Dokumen Piutang</h1>
                         <Row>
                             <Col span={24}>
-                                <Form labelCol={{ span: 4 }} wrapperCol={{ span: 12 }} labelAlign={"left"} name="record-form" size={"small"} style={{ border: '1px solid #eaeaea' }}>
+                                <Form labelCol={{ span: 4 }} form={form} wrapperCol={{ span: 12 }} labelAlign={"left"} name="record-form" size={"small"} style={{ border: '1px solid #eaeaea' }}>
                                     <Form.Item name="kd_penerbit" label="Kantor Penerbit" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
                                         <Input style={{ borderLeft: '5px solid #eaeaea' }} />
                                     </Form.Item>
@@ -211,38 +236,19 @@ function RekamDokumenPiutang() {
                                     </Form.Item>
                                     <Form.Item name="dokumen_asal" label="Dokumen Asal" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
                                         <Input.Group compact>
+                                            {/** SURAT */}
                                             <Form.Item style={{ marginBottom: 0, width: "20%" }}>
-                                                <AutoComplete
-                                                    value={inputValues}
-                                                    options={options}
-                                                    style={{
-                                                        borderLeft: '5px solid #eaeaea',
-                                                        width: "100%"
-                                                    }}
-                                                    onSelect={onSelect}
-                                                    onSearch={onSearch}
-                                                    onChange={onChange}
-                                                    placeholder="Surat"
-                                                />
+                                                <Input style={{ borderLeft: '5px solid #eaeaea' }} value={surat} onChange={(e) => setSurat(e.target.value)} placeholder="Surat" />
                                             </Form.Item>
                                             <span style={{ marginRight: 8, marginLeft: 8 }}>/</span>
+                                            {/** NOMOR */}
                                             <Form.Item style={{ marginBottom: 0, width: "20%" }}>
-                                                <AutoComplete
-                                                    // value={inputValues}
-                                                    // options={options}
-                                                    style={{
-                                                        borderLeft: '5px solid #eaeaea',
-                                                        width: "100%"
-                                                    }}
-                                                    // onSelect={onSelect}
-                                                    // onSearch={onSearch}
-                                                    // onChange={onChange}
-                                                    placeholder="Nomor"
-                                                />
+                                                <Input style={{ borderLeft: '5px solid #eaeaea' }} value={nomor} onChange={(e) => setNomor(e.target.value)} placeholder="Nomor" />
                                             </Form.Item>
                                             <span style={{ marginRight: 8, marginLeft: 8 }}>/</span>
+                                            {/** TANGGAL */}
                                             <Form.Item style={{ marginBottom: 0, width: "20%" }}>
-                                                <DatePicker onChange={handleDate} placeholder="Tanggal" style={{ width: '100%' }} />
+                                                <DatePicker style={{ width: '100%' }} onChange={handleDate} placeholder="Tanggal" format={"DD/MM/YYYY"} />
                                             </Form.Item>
                                             <Form.Item style={{ marginLeft: 8, marginBottom: 0, width: "12%" }}>
                                                 <Button type="info" style={{ width: '100%' }} onClick={handleTarik}>Tarik</Button>
@@ -252,7 +258,7 @@ function RekamDokumenPiutang() {
                                             </Form.Item>
                                         </Input.Group>
                                     </Form.Item>
-                                    <Form.Item name="perusahaan" label="Perusahaan" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
+                                    <Form.Item name="perusahaan" label="Perusahaan" wrapperCol={{ span: 8 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
                                         <Input style={{ borderLeft: '5px solid #eaeaea' }} />
                                     </Form.Item>
                                     <Form.Item name="alamat_perusahaan" label="Alamat Perusahaan" wrapperCol={{ span: 12 }} style={{ marginBottom: 0, padding: '1px 1px 1px 5px', borderBottom: '1px solid #eaeaea' }}>
