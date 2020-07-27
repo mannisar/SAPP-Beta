@@ -66,7 +66,7 @@ export default function MutasiDokumen() {
   ];
 
   return (
-    <Card>
+    <Card className="card-layout">
       <h2>Mutasi Dokumen</h2>
       <Table dataSource={data} columns={column} scroll={{ x: 1000 }} />
       <Modal

@@ -5,13 +5,17 @@ import {
   Button,
   useState,
   Modal,
+  Row,
+  Col,
 } from "../../libraries/dependencies";
-// import { PDFDownloadLink } from "@react-pdf/renderer";
-// import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import Menu from "../../menu/index";
+import TotalSurat from "./TotalSurat";
+import CardTotalSurat from "./CardTotalSurat";
 
 export default function Header() {
   const [showModal, setModal] = useState(false);
   const [contentModal, setContent] = useState("");
+  const [togleChart, setTogleChart] = useState(false);
   function handleLihat(record) {
     setContent(record);
     setModal(true);
@@ -183,14 +187,27 @@ export default function Header() {
     },
   ];
 
+  function ChartMode() {
+    if (togleChart) {
+      return <TotalSurat />;
+    } else {
+      return <CardTotalSurat />;
+    }
+  }
   return (
-    <Card>
+    <Card className="card-layout">
+      <Menu />
       <h3>BROWSE DOKUMEN PIUTANG</h3>
+      <Row justify="center">{/* <ChartMode /> */}</Row>
+      {/* <Row justify="center">
+        <Button onClick={() => setTogleChart(!togleChart)}>Change Mode</Button>
+      </Row> */}
+
       <Table
         columns={columns}
         dataSource={data}
         size="small"
-        pagination={5}
+        pagination={{ pageSize: 5, showQuickJumper: true }}
         scroll={{ x: 1500 }}
       />
       <Modal

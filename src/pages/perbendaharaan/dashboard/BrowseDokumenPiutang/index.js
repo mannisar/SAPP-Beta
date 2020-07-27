@@ -1,17 +1,41 @@
-import { React, Layout, Row, Col } from "../../libraries/dependencies";
+import {
+  React,
+  useState,
+  Layout,
+  Row,
+  Col,
+  Button,
+} from "../../libraries/dependencies";
 import Pungutan from "./Pungutan";
 import Detail from "./Detail";
 import Timeline from "./Timeline";
 import History from "./History";
 import MutasiDokumen from "./MutasiDokumen";
 import Header from "./Header";
-import Menu from "../../menu/index";
+import TotalSurat from "./TotalSurat";
+import CardTotalSurat from "./CardTotalSurat";
 
 export default function BrowseDokumenPiutang() {
+  const [togleChart, setTogleChart] = useState(false);
+
+  function ChartMode() {
+    if (togleChart) {
+      return <TotalSurat />;
+    } else {
+      return <CardTotalSurat />;
+    }
+  }
+
   return (
-    <Layout>
-      <Menu />
+    <Layout style={{ backgroundColor: "#fff" }}>
+      {/* <Menu /> */}
       <Row justify="center">
+        <ChartMode />
+      </Row>
+      <Row justify="center">
+        <Button onClick={() => setTogleChart(!togleChart)}>Change Mode</Button>
+      </Row>
+      <Row justify="center" style={{ marginTop: "10px" }}>
         <Col span={24}>
           <Header />
         </Col>
