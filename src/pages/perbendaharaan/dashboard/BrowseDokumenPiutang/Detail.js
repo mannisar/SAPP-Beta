@@ -97,6 +97,7 @@ export default function Detail() {
               border: "1px solid",
               display: "flex",
               justifyContent: "flex-start",
+              backgroundColor: item.judul === "PPJK" ? "red" : "#fff",
             }}
           >
             <td
